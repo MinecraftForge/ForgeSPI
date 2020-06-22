@@ -80,18 +80,34 @@ public class ModFileScanData
             this.interfaces = interfaces;
         }
 
+        public Type getClassType() {
+            return clazz;
+        }
+
+        public Type getParentType() {
+            return parent;
+        }
+
+        public Set<Type> getInterfaceTypes() {
+            return interfaces;
+        }
+
         @Override
         public boolean equals(final Object obj) {
-            try {
-                return (!Objects.isNull(obj)) && Objects.equals(clazz, ((ClassData)obj).clazz);
-            } catch (ClassCastException e) {
+            if (obj == null) { return false; }
+            if (obj == this) { return true; }
+            if (obj.getClass() != getClass()) {
                 return false;
             }
+            ClassData dat = (ClassData) obj;
+            return Objects.equals(clazz, dat.clazz)
+                    && Objects.equals(parent, dat.parent)
+                    && Objects.equals(interfaces, dat.interfaces);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hashCode(this.clazz);
+            return Objects.hash(this.clazz, this.parent, this.interfaces);
         }
     }
     public static class AnnotationData {
