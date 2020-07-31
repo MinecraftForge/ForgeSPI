@@ -83,5 +83,7 @@ public interface IModInfo
         void setOwner(IModInfo owner);
 
         IModInfo getOwner();
+        
+        URL getDisplayURL();
     }
 }
