@@ -49,6 +49,8 @@ public interface IModInfo
     Map<String,Object> getModProperties();
 
     URL getUpdateURL();
+    
+    URL getDisplayURL();
 
     enum Ordering {
         BEFORE, AFTER, NONE
@@ -83,5 +85,7 @@ public interface IModInfo
         void setOwner(IModInfo owner);
 
         IModInfo getOwner();
+        
+        URL getDisplayURL();
     }
 }
