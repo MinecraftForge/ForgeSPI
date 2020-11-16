@@ -21,6 +21,8 @@ package net.minecraftforge.forgespi.locating;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import javax.annotation.Nullable;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.CodeSigner;
 import java.util.List;
@@ -39,6 +41,18 @@ public interface IModLocator {
     String name();
 
     Path findPath(IModFile modFile, String... path);
+
+    /**
+     * This method functions like {@link #findPath(IModFile, String...)}, but returns {@code null} when the supplied path does not exist in the {@link IModFile} specified.
+     */
+    @Nullable
+    default Path findPathIfExists(IModFile modFile, String... path) {
+        Path ret = findPath(modFile, path);
+        if (Files.exists(ret))
+            return ret;
+        else
+            return null;
+    }
 
     void scanFile(final IModFile modFile, Consumer<Path> pathConsumer);
 
