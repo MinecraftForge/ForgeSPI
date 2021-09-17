@@ -34,6 +34,6 @@ public interface IModFile {
     IModFileInfo getModFileInfo();
 
     enum Type {
-        MOD, LIBRARY, LANGPROVIDER
+        MOD, LIBRARY, LANGPROVIDER, GAMELIBRARY
     }
 }
