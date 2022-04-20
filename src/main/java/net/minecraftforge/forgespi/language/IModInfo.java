@@ -25,6 +25,7 @@ import org.apache.maven.artifact.versioning.ArtifactVersion;
 import org.apache.maven.artifact.versioning.VersionRange;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -44,6 +45,12 @@ public interface IModInfo
     ArtifactVersion getVersion();
 
     List<? extends ModVersion> getDependencies();
+
+    //TODO:Un-default in 6.X
+    default List<? extends Conflict> getConflicts()
+    {
+        return new ArrayList<>();
+    }
 
     String getNamespace();
 
@@ -94,5 +101,19 @@ public interface IModInfo
         IModInfo getOwner();
 
         Optional<URL> getReferralURL();
+    }
+
+    interface Conflict {
+        String getModId();
+
+        VersionRange getVersionRange();
+
+        DependencySide getSide();
+
+        void setOwner(IModInfo owner);
+
+        IModInfo getOwner();
+
+        Optional<String> getReason();
     }
 }
