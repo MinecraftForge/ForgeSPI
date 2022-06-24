@@ -108,7 +108,7 @@ public interface IModFile {
      *
      * @return The provider of this file.
      */
-    IModProvider getProvider();
+    IModLocator getLocator();
 
     /**
      * The metadata info related to this particular file.
