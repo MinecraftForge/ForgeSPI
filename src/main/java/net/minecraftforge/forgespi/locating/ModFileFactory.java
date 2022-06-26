@@ -16,11 +16,11 @@ public interface ModFileFactory {
     /**
      * Builds a new mod file instance depending on the current runtime.
      * @param jar The secure jar to load the mod file from.
-     * @param provider The provider which is offering the mod file for loading-
+     * @param locator The locator which is offering the mod file for loading-
      * @param parser The parser which is responsible for parsing the metadata of the file itself.
      * @return The mod file.
      */
-    IModFile build(final SecureJar jar, final IModProvider provider, ModFileInfoParser parser);
+    IModFile build(final SecureJar jar, final IModLocator locator, ModFileInfoParser parser);
 
     /**
      * A parser specification for building a particular mod files metadata.
