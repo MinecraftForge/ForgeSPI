@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Forge Development LLC
+ * SPDX-License-Identifier: LGPL-2.1-only
+ */
 package net.minecraftforge.forgespi.locating;
 
 import java.nio.file.Path;
@@ -7,8 +11,7 @@ import java.util.function.Consumer;
 /**
  * Describes objects which can provide mods (or related jars) to the loading runtime.
  */
-public interface IModProvider
-{
+public interface IModProvider {
     /**
      * The name of the provider.
      * Has to be unique between all providers loaded into the runtime.

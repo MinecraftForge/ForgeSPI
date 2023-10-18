@@ -1,8 +1,11 @@
+/*
+ * Copyright (c) Forge Development LLC
+ * SPDX-License-Identifier: LGPL-2.1-only
+ */
 package net.minecraftforge.forgespi.language;
 
 import java.util.List;
 import java.util.Optional;
-
 
 /**
  * This is an interface for querying configuration elements

@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Forge Development LLC
+ * SPDX-License-Identifier: LGPL-2.1-only
+ */
 package net.minecraftforge.forgespi.locating;
 
 import net.minecraftforge.api.distmarker.Dist;
@@ -41,6 +45,7 @@ public class ForgeFeature {
     public static Object featureValue(final Bound bound) {
         return features.getOrDefault(bound.featureName(), MISSING).featureValue();
     }
+
     public sealed interface IFeatureTest<F> extends Predicate<F> {
         IModInfo.DependencySide applicableSides();
         F convertFromString(final String value);
@@ -64,6 +69,7 @@ public class ForgeFeature {
             return (T) features.getOrDefault(featureName, MISSING).convertFromString(featureBound);
         }
     }
+
     /**
      * Version based feature test. Uses standard MavenVersion system. Will test the constructed version against
      * ranges requested by mods.

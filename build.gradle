@@ -1,137 +1,88 @@
+import net.minecraftforge.gradleutils.PomUtils
+
 plugins {
-    id 'org.ajoberstar.grgit' version '4.1.0'
-    id 'com.github.ben-manes.versions' version '0.39.0'
-    id 'org.javamodularity.moduleplugin' version '1.8.3'
+    id 'org.cadixdev.licenser' version '0.6.1'
     id 'net.minecraftforge.gradleutils' version '2.+'
     id 'maven-publish'
     id 'java-library'
 }
 
-apply plugin: 'maven-publish'
-apply plugin: 'java-library'
-apply plugin: 'org.javamodularity.moduleplugin'
-
-java.toolchain.languageVersion = JavaLanguageVersion.of(17)
-
 group 'net.minecraftforge'
-version = gradleutils.getTagOffsetBranchVersion()
+version = gradleutils.tagOffsetVersion
+println "Version: ${version}"
+
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(17)
+    withSourcesJar()
+}
 
 repositories {
     mavenCentral()
-    maven {
-        name = 'forge'
-        url = 'https://maven.minecraftforge.net'
-    }
+    maven gradleutils.forgeMaven
+    mavenLocal()
 }
 
-def isNonStable = { String version ->
-    def stableKeyword = ['RELEASE', 'FINAL', 'GA'].any { it -> version.toUpperCase().contains(it) }
-    def regex = /^[0-9,.v-]+(-r)?$/
-    return !stableKeyword && !(version ==~ regex)
+license {
+    header = file("LICENSE-header.txt")
+    newLine = false
 }
 
-dependencyUpdates {
-    rejectVersionIf {
-        isNonStable(it.candidate.version)
-    }
-}
-
-test {
-    useJUnitPlatform()
-}
 changelog {
     fromTag '1.0.0'
 }
 
-
-ext.sharedManifest = manifest {
-    attributes('Automatic-Module-Name': 'net.minecraftforge.forgespi')
-    attributes(['Specification-Title': 'forgespi',
-                'Specification-Vendor': 'forge',
-                'Specification-Version': '5', // Currently version 4 of the forgespi specification
-                'Implementation-Title': project.name,
-                'Implementation-Version': "${project.version}+${System.getenv('BUILD_NUMBER')?:0}+${gradleutils.gitInfo.branch}.${gradleutils.gitInfo.abbreviatedId}",
-                'Implementation-Vendor': 'forge',
-                'Implementation-Timestamp': java.time.Instant.now().toString(),
-                'Git-Commit': gradleutils.gitInfo.abbreviatedId,
-                'Git-Branch': gradleutils.gitInfo.branch,
-                'Build-Number': "${System.getenv('BUILD_NUMBER')?:0}"],
-            "net/minecraftforge/forgespi/")
-}
-
-jar {
-    manifest = project.manifest {
-        from sharedManifest
+tasks.named('jar', Jar).configure {
+    manifest {
+        attributes('Automatic-Module-Name': 'net.minecraftforge.forgespi')
+        attributes([
+            'Specification-Title': 'forgespi',
+            'Specification-Vendor': 'forge',
+            'Specification-Version': gradleutils.gitInfo.tag.split('\\.')[0],
+            'Implementation-Title': project.name,
+            'Implementation-Version': project.version,
+            'Implementation-Vendor': 'forge'
+        ] as java.util.LinkedHashMap, "net/minecraftforge/forgespi/")
     }
 }
 
-task sourcesJar(type: Jar) {
-    archiveClassifier = 'sources'
-    from sourceSets.main.allSource
+configurations {
+    implementation { transitive false }
+    api { transitive false }
 }
-
 
 dependencies {
-    implementation('cpw.mods:modlauncher:9.0.7')
-    implementation('org.ow2.asm:asm:9.2')
-    implementation('org.ow2.asm:asm-commons:9.2')
-    implementation('org.ow2.asm:asm-tree:9.2')
     implementation('org.apache.logging.log4j:log4j-api:2.17.0')
+    // Needed for Type
+    implementation('org.ow2.asm:asm:9.6')
+    // Needed for dependency version comparisons
     implementation('org.apache.maven:maven-artifact:3.8.1')
-    implementation('cpw.mods:securejarhandler:0.9.52')
-    api('net.minecraftforge:mergetool:1.1.5:api') {
-        transitive false
-    }
-
-
-    testRuntimeOnly('org.apache.logging.log4j:log4j-core:2.17.0')
-    testImplementation('org.junit.jupiter:junit-jupiter-api:5.7.+')
-    testImplementation('org.powermock:powermock-core:2.0.+')
-    testImplementation('org.hamcrest:hamcrest-core:2.2+')
-    testImplementation('org.junit.jupiter:junit-jupiter-engine:5.7.+')
-}
-
-artifacts {
-    archives jar
-    archives sourcesJar
+    // Needed for SecureJar API class
+    implementation('net.minecraftforge:securemodules:2.2.2')
+    // Needed for IEnvironment and ITransformer API
+    implementation('net.minecraftforge:modlauncher:10.1.1')
+    // Needed for the sided markers
+    api('net.minecraftforge:mergetool-api:1.0')
 }
 
 publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
-            artifact sourcesJar
-            pom {
-                name = 'Forge Service Provider Interface'
-                description = 'API for services which can plug into forge, or which are used by forge in other places'
-                url = 'https://github.com/MinecraftForge/ForgeSPI'
-                scm {
-                    url = 'https://github.com/MinecraftForge/ForgeSPI'
-                    connection = 'scm:git:git://github.com/MinecraftForge/ForgeSPI.git'
-                    developerConnection = 'scm:git:git@github.com:MinecraftForge/ForgeSPI.git'
-                }
-                issueManagement {
-                    system = 'github'
-                    url = 'https://github.com/MinecraftForge/ForgeSPI/issues'
-                }
-
-                licenses {
-                    license {
-                        name = 'LGPLv2.1'
-                        url = 'https://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt'
-                    }
-                }
-
-                developers {
-                    developer {
-                        id = 'cpw'
-                        name = 'cpw'
-                    }
-                }
+    publications.register('mavenJava', MavenPublication) {
+        from components.java
+        artifactId = 'forgespi'
+        pom {
+            name = 'Forge Service Provider Interface'
+            description = 'API for services which can plug into forge, or which are used by forge in other places'
+            url = 'https://github.com/MinecraftForge/ForgeSPI'
+            PomUtils.setGitHubDetails(pom, 'ForgeSPI')
+            
+            license PomUtils.Licenses.LGPLv2_1
+            developers {
+                developer PomUtils.Developers.cpw
+                developer PomUtils.Developers.LexManos
             }
         }
     }
+    
     repositories {
-        maven gradleutils.getPublishingForgeMaven()
+        maven gradleutils.publishingForgeMaven
     }
 }

@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Forge Development LLC
+ * SPDX-License-Identifier: LGPL-2.1-only
+ */
 package net.minecraftforge.forgespi;
 
 import cpw.mods.modlauncher.api.IEnvironment;
@@ -19,7 +23,6 @@ import java.util.function.Supplier;
  */
 public class Environment {
     public static final class Keys {
-
         /**
          * The @{@link Dist} which is running.
          * Populated by forge during {@link ITransformationService#initialize(IEnvironment)}
@@ -56,14 +59,10 @@ public class Environment {
         return INSTANCE;
     }
 
-
-    private final IEnvironment environment;
-
     private final Dist dist;
     private final ModFileFactory modFileFactory;
 
     private Environment(IEnvironment setup) {
-        this.environment = setup;
         this.dist = setup.getProperty(Keys.DIST.get()).orElseThrow(()->new RuntimeException("Missing DIST in environment!"));
         this.modFileFactory = setup.getProperty(Keys.MODFILEFACTORY.get()).orElseThrow(()->new RuntimeException("Missing MODFILEFACTORY in environment!"));
     }
@@ -71,6 +70,7 @@ public class Environment {
     public Dist getDist() {
         return this.dist;
     }
+
     public ModFileFactory getModFileFactory() {
         return this.modFileFactory;
     }
