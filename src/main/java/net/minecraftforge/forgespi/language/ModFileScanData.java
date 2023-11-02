@@ -22,6 +22,7 @@ public class ModFileScanData {
     private final Map<String,IModLanguageProvider.IModLanguageLoader> modTargets = new HashMap<>();
     private List<IModFileInfo> modFiles = new ArrayList<>();
 
+    @Deprecated(forRemoval = true, since = "7.1")
     public static Predicate<Type> interestingAnnotations() {
         return t -> true;
     }
@@ -51,6 +52,8 @@ public class ModFileScanData {
     }
 
     public record ClassData(Type clazz, Type parent, Set<Type> interfaces) {}
+
+    public record EnumData(Type clazz, String value) {}
 
     public record AnnotationData(Type annotationType, ElementType targetType, Type clazz, String memberName, Map<String, Object> annotationData) {}
 }
