@@ -20,7 +20,7 @@ public class ModFileScanData {
     private final Set<AnnotationData> annotations = new LinkedHashSet<>();
     private final Set<ClassData> classes = new LinkedHashSet<>();
     private final Map<String,IModLanguageProvider.IModLanguageLoader> modTargets = new HashMap<>();
-    private List<IModFileInfo> modFiles = new ArrayList<>();
+    private final List<IModFileInfo> modFiles = new ArrayList<>();
 
     @Deprecated(forRemoval = true, since = "7.1")
     public static Predicate<Type> interestingAnnotations() {

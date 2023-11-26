@@ -19,6 +19,10 @@ public interface IModFileInfo {
 
     boolean showAsResourcePack();
 
+    default boolean isClientSideOnly() {
+        return false;
+    }
+
     Map<String,Object> getFileProperties();
 
     String getLicense();
