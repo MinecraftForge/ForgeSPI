@@ -19,6 +19,9 @@ public interface IModFileInfo {
 
     boolean showAsResourcePack();
 
+    /**
+     * @return true if this mod file should be shown as a data pack.
+     */
     default boolean showAsDataPack() {
         return false;
     }
