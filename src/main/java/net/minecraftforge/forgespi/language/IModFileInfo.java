@@ -19,6 +19,10 @@ public interface IModFileInfo {
 
     boolean showAsResourcePack();
 
+    /**
+     * Indicates if this mod file is only intended for physical clients.
+     * <p>When true, the loader will skip loading this mod file on dedicated servers.</p>
+     */
     default boolean isClientSideOnly() {
         return false;
     }
