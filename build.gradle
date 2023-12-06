@@ -2,7 +2,7 @@ import net.minecraftforge.gradleutils.PomUtils
 
 plugins {
     id 'org.cadixdev.licenser' version '0.6.1'
-    id 'net.minecraftforge.gradleutils' version '2.+'
+    id 'net.minecraftforge.gradleutils' version '[2.2,2.3)'
     id 'maven-publish'
     id 'java-library'
 }
