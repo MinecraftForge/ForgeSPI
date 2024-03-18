@@ -45,10 +45,6 @@ tasks.named('jar', Jar).configure {
     }
 }
 
-configurations {
-    implementation { transitive false }
-    api { transitive false }
-}
 
 dependencies {
     implementation('org.apache.logging.log4j:log4j-api:2.17.0')
@@ -64,6 +60,13 @@ dependencies {
     api('net.minecraftforge:mergetool-api:1.0')
 }
 
+// Done down here so that it gets populdted into the pom/module file.
+configurations.all {
+    dependencies.all {
+        transitive false
+    }
+}
+
 publishing {
     publications.register('mavenJava', MavenPublication) {
         from components.java
@@ -73,7 +76,7 @@ publishing {
             description = 'API for services which can plug into forge, or which are used by forge in other places'
             url = 'https://github.com/MinecraftForge/ForgeSPI'
             PomUtils.setGitHubDetails(pom, 'ForgeSPI')
-            
+
             license PomUtils.Licenses.LGPLv2_1
             developers {
                 developer PomUtils.Developers.cpw
@@ -81,7 +84,7 @@ publishing {
             }
         }
     }
-    
+
     repositories {
         maven gradleutils.publishingForgeMaven
     }

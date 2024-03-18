@@ -4,9 +4,9 @@
  */
 package net.minecraftforge.forgespi.coremod;
 
-import cpw.mods.modlauncher.api.*;
+import java.util.List;
 
-import java.util.*;
+import cpw.mods.modlauncher.api.ITransformer;
 
 /**
  * Core Mod Provider - core mod logic is implemented
