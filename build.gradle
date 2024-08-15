@@ -49,7 +49,7 @@ tasks.named('jar', Jar).configure {
 dependencies {
     implementation('org.apache.logging.log4j:log4j-api:2.17.0')
     // Needed for Type
-    implementation('org.ow2.asm:asm:9.6')
+    implementation('org.ow2.asm:asm:9.7')
     // Needed for dependency version comparisons
     implementation('org.apache.maven:maven-artifact:3.8.1')
     // Needed for SecureJar API class
