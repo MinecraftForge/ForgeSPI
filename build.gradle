@@ -56,6 +56,8 @@ dependencies {
     implementation('net.minecraftforge:securemodules:2.2.2')
     // Needed for IEnvironment and ITransformer API
     implementation('net.minecraftforge:modlauncher:10.1.1')
+    // Needed for Nullable annotation
+    implementation('org.jetbrains:annotations:24.1.0')
     // Needed for the sided markers
     api('net.minecraftforge:mergetool-api:1.0')
 }
