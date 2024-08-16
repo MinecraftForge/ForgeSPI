@@ -17,14 +17,6 @@ public interface IConfigurable {
 
     <T> Optional<T> getConfigElement(String... key);
 
-    default <T> T getNullableConfigElement(String key) {
-        return this.<T>getConfigElement(key).orElse(null);
-    }
-
-    default <T> T getNullableConfigElement(String... key) {
-        return this.<T>getConfigElement(key).orElse(null);
-    }
-
     default List<? extends IConfigurable> getConfigList(String key) {
         return getConfigList(new String[] { key });
     }
