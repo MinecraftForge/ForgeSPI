@@ -4,8 +4,6 @@
  */
 package net.minecraftforge.forgespi.language;
 
-import org.jetbrains.annotations.Nullable;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -19,11 +17,11 @@ public interface IConfigurable {
 
     <T> Optional<T> getConfigElement(String... key);
 
-    default <T> @Nullable T getNullableConfigElement(String key) {
+    default <T> T getNullableConfigElement(String key) {
         return this.<T>getConfigElement(key).orElse(null);
     }
 
-    default <T> @Nullable T getNullableConfigElement(String... key) {
+    default <T> T getNullableConfigElement(String... key) {
         return this.<T>getConfigElement(key).orElse(null);
     }
 
