@@ -6,7 +6,6 @@ package net.minecraftforge.forgespi.language;
 
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,7 +31,5 @@ public interface IConfigurable {
         return getConfigList(new String[] { key });
     }
 
-    default List<? extends IConfigurable> getConfigList(String... key) {
-        return Collections.emptyList();
-    }
+    List<? extends IConfigurable> getConfigList(String... key);
 }
